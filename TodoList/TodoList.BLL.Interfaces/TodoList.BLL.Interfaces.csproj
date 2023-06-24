@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TodoList.BLL.DTOs\TodoList.BLL.DTOs.csproj" />
+    <ProjectReference Include="..\TodoList.Entities\TodoList.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
