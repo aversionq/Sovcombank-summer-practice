@@ -28,7 +28,7 @@ namespace TodoList.BLL.Implementations
             }
             catch (ArgumentException)
             {
-                throw new ArgumentException("Wrong priority type!");
+                throw new ArgumentException("Неверное значение приоритета задачи!");
             }
             catch (Exception)
             {
@@ -48,7 +48,7 @@ namespace TodoList.BLL.Implementations
             }
         }
 
-        public async Task<IEnumerable<TodoItemDTO>> GetAllTodoItems()
+        public async Task<List<TodoItemDTO>> GetAllTodoItems()
         {
             try
             {
@@ -76,7 +76,7 @@ namespace TodoList.BLL.Implementations
             }
         }
 
-        public async Task<IEnumerable<TodoItemDTO>> SearchTodoItems(string nameSubstring)
+        public async Task<List<TodoItemDTO>> SearchTodoItems(string nameSubstring)
         {
             try
             {
@@ -102,15 +102,16 @@ namespace TodoList.BLL.Implementations
             }
         }
 
-        public async Task<IEnumerable<TodoItemDTO>> SortTodoItemsByPriority(bool isAsc)
+        public async Task<List<TodoItemDTO>> SortTodoItemsByPriority(bool isAsc)
         {
             try
             {
                 var todoItems = await _todoListDAO.GetAllTodoItems();
+                todoItems = isAsc 
+                    ? todoItems.OrderBy(x => x.Priority).ToList() 
+                    : todoItems.OrderByDescending(x => x.Priority).ToList();
                 var todoItemsDTO = _todoItemsMapper.Map<List<TodoItem>, List<TodoItemDTO>>(todoItems);
-                return isAsc 
-                    ? todoItemsDTO.OrderBy(x => x.Priority) 
-                    : todoItemsDTO.OrderByDescending(x => x.Priority);
+                return todoItemsDTO;
             }
             catch (Exception)
             {
