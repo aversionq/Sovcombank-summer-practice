@@ -40,10 +40,11 @@ namespace TodoList.DAL.JsonDAO
         public async Task<List<TodoItem>> GetAllTodoItems()
         {
             List<TodoItem> todoItemsList = new List<TodoItem>();
-            foreach (var todoItemFile in Directory.GetFiles(_folderPath, "*.json"))
+            var filePaths = Directory.GetFiles(_folderPath, "*.json");
+            foreach (var path in filePaths)
             {
-                var jsonFile = await File.ReadAllTextAsync(todoItemFile);
-                var todoItem = JsonSerializer.Deserialize<TodoItem>(jsonFile);
+                var fileName = Path.GetFileNameWithoutExtension(path);
+                var todoItem = await GetTodoItemById(Guid.Parse(fileName));
                 todoItemsList.Add(todoItem);
             }
 
