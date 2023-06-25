@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using TodoList.DAL.Interfaces;
 using TodoList.Entities;
@@ -8,6 +9,8 @@ namespace TodoList.DAL.JsonDAO
     public class JsonDAO : ITodoListDAO
     {
         private string _folderPath;
+        // Контейнеры для кэша.
+        private Dictionary<Guid, WeakReference<TodoItem>> _cache = new();
 
         public JsonDAO()
         {
@@ -22,11 +25,23 @@ namespace TodoList.DAL.JsonDAO
             var serializedTodoItem = JsonSerializer.Serialize(item);
             var jsonFilePath = GetJsonFilePath(item.Id);
 
+            // Кэширование.
+            if (!_cache.ContainsKey(item.Id))
+            {
+                _cache.Add(item.Id, new WeakReference<TodoItem>(item));
+            }
+
             await File.WriteAllTextAsync(jsonFilePath, serializedTodoItem);
         }
 
         public void DeleteTodoItem(Guid id)
         {
+            // Удаление из кэша.
+            if (_cache.ContainsKey(id))
+            {
+                _cache.Remove(id);
+            }
+
             if (File.Exists(GetJsonFilePath(id)))
             {
                 File.Delete(GetJsonFilePath(id));
@@ -48,16 +63,30 @@ namespace TodoList.DAL.JsonDAO
                 todoItemsList.Add(todoItem);
             }
 
-            return todoItemsList;
+            return todoItemsList.OrderBy(x => x.IsDone).ToList();
         }
 
         public async Task<TodoItem> GetTodoItemById(Guid id)
         {
+            // Проверка, есть ли объект в кэше.
+            TodoItem item;
+            WeakReference<TodoItem> weakRef;
+            if (_cache.TryGetValue(id, out weakRef) && weakRef.TryGetTarget(out item))
+            {
+                return item;
+            }
+
             if (File.Exists(GetJsonFilePath(id)))
             {
                 var jsonFilePath = GetJsonFilePath(id);
                 var todoItem = JsonSerializer
                     .Deserialize<TodoItem>(await File.ReadAllTextAsync(jsonFilePath));
+                
+                // Кэширование.
+                if (!_cache.ContainsKey(id))
+                {
+                    _cache.Add(id, new WeakReference<TodoItem>(todoItem));
+                }
 
                 return todoItem;
             }
@@ -73,6 +102,7 @@ namespace TodoList.DAL.JsonDAO
             var searchTodoItems = allTodoItems
                 .Where(x => x.Name.ToLower().Contains(nameSubstring.ToLower()))
                 .ToList();
+
             return searchTodoItems;
         }
 
@@ -80,6 +110,16 @@ namespace TodoList.DAL.JsonDAO
         {
             var todoItem = await GetTodoItemById(id);
             todoItem.IsDone = true;
+            // Кэширование
+            if (_cache.ContainsKey(id))
+            {
+                _cache[id] = new WeakReference<TodoItem>(todoItem);
+            }
+            else
+            {
+                _cache.Add(id, new WeakReference<TodoItem>(todoItem));
+            }
+
             await File.WriteAllTextAsync(GetJsonFilePath(id), JsonSerializer.Serialize(todoItem));
         }
 
