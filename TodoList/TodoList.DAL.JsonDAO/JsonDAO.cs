@@ -33,7 +33,7 @@ namespace TodoList.DAL.JsonDAO
             }
             else
             {
-                throw new FileNotFoundException($"Can't find file '{id}' in directory '{_folderPath}'");
+                throw new FileNotFoundException($"Не получается найти файл '{id}' в директории '{_folderPath}'");
             }
         }
 
@@ -62,7 +62,7 @@ namespace TodoList.DAL.JsonDAO
             }
             else
             {
-                throw new FileNotFoundException($"Can't find file '{id}' in directory '{_folderPath}'");
+                throw new FileNotFoundException($"Не получается найти файл '{id}' в директории '{_folderPath}'");
             }
         }
 
@@ -79,6 +79,7 @@ namespace TodoList.DAL.JsonDAO
         {
             var todoItem = await GetTodoItemById(id);
             todoItem.IsDone = true;
+            await File.WriteAllTextAsync(GetJsonFilePath(id), JsonSerializer.Serialize(todoItem));
         }
 
         private string GetJsonFilePath(Guid itemId) => @$"{_folderPath}{itemId}.json";
