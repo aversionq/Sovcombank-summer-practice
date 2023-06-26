@@ -12,7 +12,7 @@ namespace TodoList.DAL.Interfaces
         public Task<TodoItem> GetTodoItemById(Guid id);
         public Task<List<TodoItem>> GetAllTodoItems();
         public Task AddTodoItem(TodoItem item);
-        public void DeleteTodoItem(Guid id);
+        public Task DeleteTodoItem(Guid id);
         public Task SetTodoItemAsDone(Guid id);
         public Task<List<TodoItem>> SearchTodoItems(string nameSubstring);
     }

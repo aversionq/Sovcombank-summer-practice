@@ -34,7 +34,7 @@ namespace TodoList.DAL.JsonDAO
             await File.WriteAllTextAsync(jsonFilePath, serializedTodoItem);
         }
 
-        public void DeleteTodoItem(Guid id)
+        public async Task DeleteTodoItem(Guid id)
         {
             // Удаление из кэша.
             if (_cache.ContainsKey(id))

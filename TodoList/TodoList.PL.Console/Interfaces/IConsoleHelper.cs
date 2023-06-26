@@ -13,7 +13,7 @@ namespace TodoList.PL.Console.Interfaces
         public Task<TodoItemDTO> GetTodoItemById(Guid id);
         public Task<List<TodoItemDTO>> GetAllTodoItems();
         public Task AddTodoItem(TodoItemDTO item);
-        public void DeleteTodoItem(Guid id);
+        public Task DeleteTodoItem(Guid id);
         public Task SetTodoItemAsDone(Guid id);
         public Task<List<TodoItemDTO>> SearchTodoItems(string nameSubstring);
         public Task<List<TodoItemDTO>> SortTodoItemsByPriority(bool isAsc);

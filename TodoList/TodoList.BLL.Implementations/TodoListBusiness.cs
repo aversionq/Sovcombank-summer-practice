@@ -36,11 +36,11 @@ namespace TodoList.BLL.Implementations
             }
         }
 
-        public void DeleteTodoItem(Guid id)
+        public async Task DeleteTodoItem(Guid id)
         {
             try
             {
-                _todoListDAO.DeleteTodoItem(id);
+                await _todoListDAO.DeleteTodoItem(id);
             }
             catch (Exception)
             {
