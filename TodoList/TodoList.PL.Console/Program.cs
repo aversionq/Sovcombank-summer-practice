@@ -41,7 +41,6 @@ namespace TodoList.PL.Console
                     {
                         options.UseSqlite(context.Configuration.GetConnectionString("SQLite"));
                     });
-                    services.AddScoped<ITodoListDbContext, TodoListDbContext>();
                 })
                 .Build();
 
