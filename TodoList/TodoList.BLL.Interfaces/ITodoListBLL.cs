@@ -11,7 +11,7 @@ namespace TodoList.BLL.Interfaces
     {
         public Task<TodoItemDTO> GetTodoItemById(Guid id);
         public Task<List<TodoItemDTO>> GetAllTodoItems();
-        public Task AddTodoItem(TodoItemDTO item);
+        public Task AddTodoItem(TodoItemToAddDTO item);
         public Task DeleteTodoItem(Guid id);
         public Task SetTodoItemAsDone(Guid id);
         public Task<List<TodoItemDTO>> SearchTodoItems(string nameSubstring);

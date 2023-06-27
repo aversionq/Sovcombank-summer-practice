@@ -10,6 +10,7 @@ namespace TodoList.BLL.Implementations
     {
         private ITodoListDAO _todoListDAO;
         private Mapper _todoItemsMapper;
+        private Mapper _todoItemToAddMapper;
 
         public TodoListBusiness(ITodoListDAO todoListDAO)
         {
@@ -17,13 +18,13 @@ namespace TodoList.BLL.Implementations
             SetupMappers();
         }
 
-        public async Task AddTodoItem(TodoItemDTO item)
+        public async Task AddTodoItem(TodoItemToAddDTO item)
         {
             try
             {
                 Enum.Parse<PriorityType>(item.Priority);
-                item.Id = Guid.NewGuid();
-                var todoItemEntity = _todoItemsMapper.Map<TodoItemDTO, TodoItem>(item);
+                var todoItemEntity = _todoItemToAddMapper.Map<TodoItemToAddDTO, TodoItem>(item);
+                todoItemEntity.Id = Guid.NewGuid();
                 await _todoListDAO.AddTodoItem(todoItemEntity);
             }
             catch (ArgumentException)
@@ -123,6 +124,10 @@ namespace TodoList.BLL.Implementations
         {
             var todoMapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<TodoItem, TodoItemDTO>().ReverseMap());
             _todoItemsMapper = new Mapper(todoMapperConfig);
+
+            var todoToAddMapperConfig = 
+                new MapperConfiguration(cfg => cfg.CreateMap<TodoItem, TodoItemToAddDTO>().ReverseMap());
+            _todoItemToAddMapper = new Mapper(todoToAddMapperConfig);
         }
     }
 }
