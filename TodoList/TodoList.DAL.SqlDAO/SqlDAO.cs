@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace TodoList.DAL.SqlDAO
         {
             _dbContext.TodoItems.Add(item);
             await _dbContext.SaveChangesAsync();
+            _dbContext.Entry(item).State = EntityState.Detached;
         }
 
         public async Task DeleteTodoItem(Guid id)
@@ -32,6 +34,7 @@ namespace TodoList.DAL.SqlDAO
             };
             _dbContext.TodoItems.Remove(item);
             await _dbContext.SaveChangesAsync();
+            _dbContext.Entry(item).State = EntityState.Deleted;
         }
 
         public async Task<List<TodoItem>> GetAllTodoItems()
@@ -69,6 +72,7 @@ namespace TodoList.DAL.SqlDAO
             _dbContext.Entry(item).Property(x => x.IsDone).IsModified = true;
 
             await _dbContext.SaveChangesAsync();
+            _dbContext.Entry(item).State = EntityState.Detached;
         }
     }
 }
