@@ -24,6 +24,9 @@ namespace TodoList.BLL.Implementations
             {
                 Enum.Parse<PriorityType>(item.Priority);
                 var todoItemEntity = _todoItemToAddMapper.Map<TodoItemToAddDTO, TodoItem>(item);
+
+                /* Посольку одна из реализаций слоя с данными не подразумевает использования
+                   СУБД, то Guid приходится генерировать именно на бэкенде, а не средствами СУБД */
                 todoItemEntity.Id = Guid.NewGuid();
                 await _todoListDAO.AddTodoItem(todoItemEntity);
             }
