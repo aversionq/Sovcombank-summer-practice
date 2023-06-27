@@ -14,9 +14,13 @@ namespace TodoList.DAL.JsonDAO
 
         public JsonDAO()
         {
-            var appDirPath = Directory.GetParent(Environment.CurrentDirectory)
-                .Parent.Parent.Parent.Parent;
-            _folderPath = appDirPath + @"\JsonTodos\";
+            //var appDirPath = Directory.GetParent(Environment.CurrentDirectory)
+            //    .Parent.Parent.Parent.Parent;
+
+            // Приходится указывать абсолютный путь до папки с .json,
+            // потому что относительный путь считается по-разному в
+            // зависимости от того, какой из PL используется.
+            _folderPath = @"C:\CODE\dev\TodoItems\JsonTodos\";
             Directory.CreateDirectory(_folderPath);
         }
 
@@ -34,7 +38,7 @@ namespace TodoList.DAL.JsonDAO
             await File.WriteAllTextAsync(jsonFilePath, serializedTodoItem);
         }
 
-        public void DeleteTodoItem(Guid id)
+        public async Task DeleteTodoItem(Guid id)
         {
             // Удаление из кэша.
             if (_cache.ContainsKey(id))

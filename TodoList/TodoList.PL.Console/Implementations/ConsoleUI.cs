@@ -55,7 +55,7 @@ namespace TodoList.PL.Console.Implementations
                     PrintAllTodoItems(items);
                     System.Console.Write("Введите номер задачи для удаления: ");
                     var index = InputTodoItemIndex(1, items.Count);
-                    _consoleHelper.DeleteTodoItem(items[index - 1].Id);
+                    await _consoleHelper.DeleteTodoItem(items[index - 1].Id);
                     System.Console.WriteLine("Задача успешно удалена!");
                 }
                 else
@@ -125,7 +125,7 @@ namespace TodoList.PL.Console.Implementations
             }
         }
 
-        private TodoItemDTO InputTodoItem()
+        private TodoItemToAddDTO InputTodoItem()
         {
             try
             {
@@ -141,7 +141,7 @@ namespace TodoList.PL.Console.Implementations
                 var desc = System.Console.ReadLine();
                 System.Console.WriteLine();
 
-                return new TodoItemDTO
+                return new TodoItemToAddDTO
                 {
                     Name = name,
                     Priority = priority,

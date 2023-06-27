@@ -18,7 +18,7 @@ namespace TodoList.PL.Console.Implementations
             _bll = todoListBLL;
         }
 
-        public async Task AddTodoItem(TodoItemDTO item)
+        public async Task AddTodoItem(TodoItemToAddDTO item)
         {
             try
             {
@@ -30,11 +30,11 @@ namespace TodoList.PL.Console.Implementations
             }
         }
 
-        public void DeleteTodoItem(Guid id)
+        public async Task DeleteTodoItem(Guid id)
         {
             try
             {
-                _bll.DeleteTodoItem(id);
+                await _bll.DeleteTodoItem(id);
             }
             catch (Exception)
             {
