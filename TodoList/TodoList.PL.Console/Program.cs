@@ -33,10 +33,10 @@ namespace TodoList.PL.Console
                         b.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.None);
                     });
                     services.AddSingleton<ITodoListDAO, SqlDAO>();
-                    services.AddSingleton<ITodoListBLL, TodoListBusiness>();
-                    services.AddSingleton<IConsoleUI, ConsoleUI>();
-                    services.AddSingleton<IConsoleHelper, ConsoleHelper>();
-                    services.AddSingleton<IConsoleApp, ConsoleApp>();
+                    services.AddScoped<ITodoListBLL, TodoListBusiness>();
+                    services.AddScoped<IConsoleUI, ConsoleUI>();
+                    services.AddScoped<IConsoleHelper, ConsoleHelper>();
+                    services.AddScoped<IConsoleApp, ConsoleApp>();
                     services.AddDbContext<ITodoListDbContext, TodoListDbContext>(options =>
                     {
                         options.UseSqlite(context.Configuration.GetConnectionString("SQLite"));
