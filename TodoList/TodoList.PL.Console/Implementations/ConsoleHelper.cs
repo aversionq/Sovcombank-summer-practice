@@ -18,7 +18,7 @@ namespace TodoList.PL.Console.Implementations
             _bll = todoListBLL;
         }
 
-        public async Task AddTodoItem(TodoItemDTO item)
+        public async Task AddTodoItem(TodoItemToAddDTO item)
         {
             try
             {

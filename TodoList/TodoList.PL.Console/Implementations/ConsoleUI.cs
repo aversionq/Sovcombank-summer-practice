@@ -125,7 +125,7 @@ namespace TodoList.PL.Console.Implementations
             }
         }
 
-        private TodoItemDTO InputTodoItem()
+        private TodoItemToAddDTO InputTodoItem()
         {
             try
             {
@@ -141,7 +141,7 @@ namespace TodoList.PL.Console.Implementations
                 var desc = System.Console.ReadLine();
                 System.Console.WriteLine();
 
-                return new TodoItemDTO
+                return new TodoItemToAddDTO
                 {
                     Name = name,
                     Priority = priority,
