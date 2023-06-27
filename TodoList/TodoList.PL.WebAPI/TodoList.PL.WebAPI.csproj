@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.19">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.19" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TodoList.BLL.DTOs\TodoList.BLL.DTOs.csproj" />
+    <ProjectReference Include="..\TodoList.BLL.Implementations\TodoList.BLL.Implementations.csproj" />
+    <ProjectReference Include="..\TodoList.BLL.Interfaces\TodoList.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\TodoList.DAL.Interfaces\TodoList.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\TodoList.DAL.JsonDAO\TodoList.DAL.JsonDAO.csproj" />
+    <ProjectReference Include="..\TodoList.DAL.SqlDAO\TodoList.DAL.SqlDAO.csproj" />
+  </ItemGroup>
+
+</Project>
